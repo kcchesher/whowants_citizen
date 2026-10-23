@@ -465,6 +465,7 @@ if 'game_over' not in st.session_state:
     st.session_state.game_over = False
 
 
+
 #functions
 def restart_game():
     st.session_state.current_question = 0
@@ -484,7 +485,7 @@ if st.session_state.game_over:
 #check if won
 if st.session_state.milestone == 3:
     st.success("Congratulations! You have won £1,000,000 and also citizenship")
-    if st.button("Try Again"):
+    if st.button("Try Again!!!"):
         restart_game()
         st.rerun()
 
@@ -494,22 +495,22 @@ if 'current_question_data' not in st.session_state:
 
 show_question = st.session_state.current_question_data
 
-st.write(f"Your current milestone winnings are {milestone_prizes[st.session_state.milestone]}. Your question for {prizes[st.session_state.current_question]}:")
-
 #show question
-with st.form(key='quiz_form'):
-    answer_selection = st.radio(show_question["question"], show_question["option"])
-    final_answer = st.form_submit_button(label="Final Answer")
+if not st.session_state.game_over and st.session_state.milestone < 3:
+    st.write(f"Your current milestone winnings are {milestone_prizes[st.session_state.milestone]}. Your question for {prizes[st.session_state.current_question]}:")
+    with st.form(key='quiz_form'):
+        answer_selection = st.radio(show_question["question"], show_question["option"])
+        final_answer = st.form_submit_button(label="Final Answer")
 
-if final_answer:
-    if answer_selection == show_question["answer"]:
-        if st.session_state.current_question in (4, 9, 14):
-            st.session_state.milestone +=1
-        if st.session_state.current_question < 14:
-            st.session_state.current_question += 1
-            del st.session_state.current_question_data
-    else:
-        st.session_state.game_over = True
+    if final_answer:
+        if answer_selection == show_question["answer"]:
+            if st.session_state.current_question in (4, 9, 14):
+                st.session_state.milestone +=1
+            if st.session_state.current_question < 14:
+                st.session_state.current_question += 1
+                del st.session_state.current_question_data
+        else:
+            st.session_state.game_over = True
 
-    st.rerun()
+        st.rerun()
         
